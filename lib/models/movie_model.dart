@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
-
 class MovieModel {
   final int id;
   final String title;
@@ -9,6 +7,7 @@ class MovieModel {
   final String posterPath;
   final List<int> genres;
   final bool favorite;
+
   MovieModel({
     required this.id,
     required this.title,
@@ -24,18 +23,18 @@ class MovieModel {
       'title': title,
       'release_date': releaseDate,
       'poster_path': posterPath,
-      'genres_ids': genres,
+      'genre_ids': genres,
       'favorite': favorite,
     };
   }
 
   factory MovieModel.fromMap(Map<String, dynamic> map) {
     return MovieModel(
-      id: map['id'],
-      title: map['title'],
-      releaseDate: map['release_date'],
-      posterPath: 'https://image.tmdb.org/t/p/w200/${map['poster_path']}',
-      genres: List<int>.from(map['genre_ids']),
+      id: map['id'] ?? 0,
+      title: map['title'] ?? '',
+      releaseDate: map['release_date'] ?? '',
+      posterPath: map['poster_path'],
+      genres: List<int>.from(map['genre_ids'] ?? const []),
       favorite: map['favorite'] ?? false,
     );
   }
@@ -61,33 +60,5 @@ class MovieModel {
       genres: genres ?? this.genres,
       favorite: favorite ?? this.favorite,
     );
-  }
-
-  @override
-  String toString() {
-    return 'MovieModel(id: $id, title: $title, releaseDate: $releaseDate, posterPath: $posterPath, genres: $genres, favorite: $favorite)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is MovieModel &&
-        other.id == id &&
-        other.title == title &&
-        other.releaseDate == releaseDate &&
-        other.posterPath == posterPath &&
-        listEquals(other.genres, genres) &&
-        other.favorite == favorite;
-  }
-
-  @override
-  int get hashCode {
-    return id.hashCode ^
-        title.hashCode ^
-        releaseDate.hashCode ^
-        posterPath.hashCode ^
-        genres.hashCode ^
-        favorite.hashCode;
   }
 }
